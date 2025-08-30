@@ -103,10 +103,15 @@ jobs:
           kubectl get deployments
           kubectl get pods
 
+      - name: List all files in the repository
+        run: |
+          echo "Listing all files in the repository:"
+          ls -R
+
       - name: Deploy to Kubernetes
         run: |
           echo "Applying Kubernetes deployment..."
-          kubectl apply -f deployment.yml  # Make sure the path to your YAML file is correct
+          kubectl apply -f Kubernetes/deployment.yml  # Make sure the path to your YAML file is correct
           kubectl rollout status deployment/flask-app-deployment
 
       - name: List All Deployments and Pods (after apply)
