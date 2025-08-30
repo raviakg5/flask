@@ -87,10 +87,32 @@ jobs:
           kubectl config use-context minikube
 
       # Step 13: Deploy to Kubernetes
+      # Step 13: Deploy to Kubernetes with Debugging
+      - name: Check Kubernetes Context
+        run: |
+          kubectl config current-context
+          kubectl config get-contexts
+
+      - name: Get Kubernetes Cluster Info
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: List All Deployments and Pods (before apply)
+        run: |
+          kubectl get deployments
+          kubectl get pods
+
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f deployment.yaml
+          echo "Applying Kubernetes deployment..."
+          kubectl apply -f deployment.yml  # Make sure the path to your YAML file is correct
           kubectl rollout status deployment/flask-app-deployment
+
+      - name: List All Deployments and Pods (after apply)
+        run: |
+          kubectl get deployments
+          kubectl get pods
 
       # Step 14: Expose Service and Get Minikube URL
       - name: Expose Service and Get Minikube URL
