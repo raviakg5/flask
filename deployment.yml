@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: flask-app
-          image: raviakg5/flask-app-repo:latest  # Will be updated during the pipeline
+          image: docker.io/raviakg5/flask-app-repo:latest  # Will be updated during the pipeline
           ports:
             - containerPort: 5000
 ---

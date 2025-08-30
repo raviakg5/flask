@@ -31,13 +31,13 @@ jobs:
       # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest .
-          docker tag flask-app-repo:latest ${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
+          docker build -t docker.io/${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest .
+          docker tag flask-app-repo:latest docker.io/${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
 
       # Step 5: Push Docker Image to Docker Hub
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
+          docker push docker.io/${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
 
       # Step 6: Set up Kubernetes (Kubectl) on the GitHub Runner
       - name: Set up Kubernetes CLI
@@ -48,12 +48,12 @@ jobs:
       # Step 7: Update Kubernetes Deployment (replace image)
       - name: Update Kubernetes Deployment with New Image
         run: |
-          kubectl set image deployment/flask-app-deployment flask-app=${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
+          kubectl set image deployment/flask-app-deployment flask-app=docker.io/${{ secrets.DOCKER_USERNAME }}/flask-app-repo:latest
           
       # Step 8: Apply Changes to Kubernetes Cluster
       - name: Apply Kubernetes Configuration
         run: |
-          kubectl apply -f kubernetes/deployment.yaml  # Update this path if needed
+          kubectl apply -f deployment.yaml  # Update this path if needed
           kubectl rollout status deployment/flask-app-deployment  # Wait for deployment to finish
 
       # Step 9: Expose Service (if necessary, depending on your cluster setup)
